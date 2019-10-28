@@ -9,17 +9,22 @@
 import SwiftUI
 
 public struct PieChartView : View {
-    public var data: [Int]
+    public var data: [Double]
     public var title: String
     public var legend: String?
     public var style: ChartStyle
     public var formSize:CGSize
-    public init(data: [Int], title: String, legend: String? = nil, style: ChartStyle = Styles.pieChartStyleOne, form: CGSize? = Form.medium ){
+
+    public var pieColors: [Color]?
+
+    public init(data: [Double], title: String, legend: String? = nil, style: ChartStyle = Styles.pieChartStyleOne, form: CGSize? = Form.medium, pieColors: [Color]? = nil ){
         self.data = data
         self.title = title
         self.legend = legend
         self.style = style
         self.formSize = form!
+
+        self.pieColors = pieColors
     }
     
     public var body: some View {
@@ -38,7 +43,7 @@ public struct PieChartView : View {
                         .imageScale(.large)
                         .foregroundColor(self.style.legendTextColor)
                 }.padding()
-                PieChartRow(data: data, backgroundColor: self.style.backgroundColor, accentColor: self.style.accentColor)
+                PieChartRow(data: data, backgroundColor: self.style.backgroundColor, accentColor: self.style.accentColor, pieColors: self.pieColors)
                     .foregroundColor(self.style.accentColor).padding(self.legend != nil ? 0 : 12).offset(y:self.legend != nil ? 0 : -10)
                 if(self.legend != nil) {
                     Text(self.legend!)

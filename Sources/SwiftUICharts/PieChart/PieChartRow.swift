@@ -9,15 +9,17 @@
 import SwiftUI
 
 public struct PieChartRow : View {
-    var data: [Int]
+    var data: [Double]
     var backgroundColor: Color
     var accentColor: Color
+    var pieColors: [Color]?
+    
     var slices: [PieSlice] {
-        var tempSlices:[PieSlice] = []
-        var lastEndDeg:Double = 0
+        var tempSlices: [PieSlice] = []
+        var lastEndDeg: Double = 0
         let maxValue = data.reduce(0, +)
         for slice in data {
-            let normalized:Double = Double(slice)/Double(maxValue)
+            let normalized:Double = slice / maxValue
             let startDeg = lastEndDeg
             let endDeg = lastEndDeg + (normalized * 360)
             lastEndDeg = endDeg
@@ -29,10 +31,15 @@ public struct PieChartRow : View {
         GeometryReader { geometry in
             ZStack{
                 ForEach(0..<self.slices.count){ i in
-                    PieChartCell(rect: geometry.frame(in: .local), startDeg: self.slices[i].startDeg, endDeg: self.slices[i].endDeg, index: i, backgroundColor: self.backgroundColor,accentColor: self.accentColor)
+                    PieChartCell(rect: geometry.frame(in: .local), startDeg: self.slices[i].startDeg, endDeg: self.slices[i].endDeg, index: i, backgroundColor: self.backgroundColor,accentColor: self.accentColor(for: i))
                 }
             }
         }
+    }
+
+    private func accentColor(for index: Int) -> Color {
+        guard let colors = pieColors, colors.count > index else { return accentColor }
+        return colors[index]
     }
 }
 

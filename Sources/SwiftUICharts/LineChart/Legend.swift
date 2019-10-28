@@ -48,13 +48,13 @@ struct Legend: View {
         return hLine
     }
     
-    func getYLegend() -> [Int]? {
+    func getYLegend() -> [Double]? {
         guard let max = data.points.max() else { return nil }
         guard let min = data.points.min() else { return nil }
         if(min > 0){
-            let upperBound = ((max/10)+1) * 10
-            let step = upperBound/4
-            return [step * 0,step * 1, step * 2, step * 3, step * 4]
+            let upperBound: Double = ((max/10)+1) * 10
+            let step: Double = upperBound / 4
+            return [step * 0.0,step * 1.0, step * 2.0, step * 3.0, step * 4.0]
         }
         
         return nil
